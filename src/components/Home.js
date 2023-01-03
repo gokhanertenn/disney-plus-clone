@@ -1,12 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ImgSlider from './ImgSlider';
 import Movies from './Movies';
 import Viewers from './Viewers';
+import {collection, getDocs } from 'firebase/firestore/lite';
+import db from '../firebase';
+import { useDispatch } from 'react-redux';
+import { setMovies } from '../features/movie/movieSlice';
 
-function Home() {
+
+
+
+function Home () {
+
+const dispatch = useDispatch();
+  
+    async function getCities(db) {
+    const citiesCol = collection(db, 'movies');
+    const citySnapshot = await getDocs(citiesCol);
+    const cityList = citySnapshot.docs.map(doc => doc.data());
+    
+     dispatch(setMovies(cityList)); 
+  }
+  
+  
+    useEffect(() => {
+      getCities(db)
+    },[])
+
+
+
   return (
-    <Container>
+
+
+    <Container >
       <ImgSlider/>
       <Viewers/>
       <Movies/>

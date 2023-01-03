@@ -1,3 +1,4 @@
+import React from "react";
 import Header from "./components/Header";
 import Home from "./components/Home";
 import Login from "./components/Login";
@@ -10,7 +11,10 @@ import {
 } from "react-router-dom";
 import Detail from "./components/Detail";
 
+
 function App() {
+
+   
   return (
     <div className="App">
       <Router>
