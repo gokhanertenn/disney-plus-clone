@@ -9,7 +9,7 @@ const initialState = {
 }
 
 
- const movieSlice = createSlice({
+ const movieSlice =  createSlice({
 
 name:"movie",
 initialState,

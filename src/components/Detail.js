@@ -1,14 +1,41 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import {collection, getDocs } from 'firebase/firestore/lite';
+import { useParams } from 'react-router-dom';
+import db from "../firebase";
+
+
 
 function Detail() {
+
+ const { id } = useParams();
+
+ console.log(id);
+ 
+ const [movie,setMovie] = useState("");
+
+ async function getData(db) {
+  const dataCol = collection(db, 'movies');
+  const dataSnapshot = await getDocs(dataCol);
+  const dataList = dataSnapshot.docs.map(doc => doc.data());
+  
+   setMovie(dataList); 
+}
+
+
+  useEffect(() => {
+    getData(db)
+  },[])
+
   return (
     <Container>
-        <Background>
-            <img src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/49B92C046117E89BC9243A68EE277A3B30D551D4599F23C10BF0B8C1E90AEFB6/scale?width=1440&aspectRatio=1.78&format=jpeg"/>
+
+      
+                <Background>
+            <img src={movie.CardImg}/>
         </Background>
         <ImageTitle>
-            <img src='https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/D7AEE1F05D10FC37C873176AAA26F777FC1B71E7A6563F36C6B1B497CAB1CEC2/scale?width=1440&aspectRatio=1.78'/>
+            <img src={movie.TitleImg}/>
         </ImageTitle>
        <Controls>
             
@@ -28,12 +55,13 @@ function Detail() {
           </GroupWatchButton>
        </Controls>
        <SubTitle>
-                2018 • 7m • Family, Fantasy, Kids, Animation
+                {movie.Title}
             </SubTitle>
             <Description>
-                A Chinese mom who’s sad when her grown son leaves home gets another
-                 chance at motherhood when one of her dumplings springs to life. But she finds that nothing stays cute and small forever.
+               {movie.SubTitle}
             </Description>
+             
+         
     </Container>
     
   )
